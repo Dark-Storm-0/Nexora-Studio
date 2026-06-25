@@ -1,0 +1,8 @@
+{
+  "name": "Dark Storm Upgrade Tool",
+  "description": "A tool to upgrade your Blogger template to the 2026 Dark Storm version with modern colors, fonts, and layouts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

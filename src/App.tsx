@@ -1,0 +1,96 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { doc, getDoc, setDoc, collection, query, limit, getDocs } from 'firebase/firestore';
+import { auth, db } from './lib/firebase';
+import Tool from './pages/Tool';
+import Auth from './pages/Auth';
+import Dashboard from './pages/Dashboard';
+import Plans from './pages/Plans';
+import Navbar from './components/Navbar';
+
+export interface UserData {
+  uid: string;
+  email: string;
+  role: 'admin' | 'user';
+  credits: number;
+  plan: 'free' | 'pro' | 'business';
+  planStatus: 'active' | 'pending';
+  requestedPlan?: 'free' | 'pro' | 'business';
+}
+
+export default function App() {
+  const [user, setUser] = useState<User | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      setUser(firebaseUser);
+      if (firebaseUser) {
+        try {
+          const userRef = doc(db, 'users', firebaseUser.uid);
+          const userSnap = await getDoc(userRef);
+          
+          if (userSnap.exists()) {
+            setUserData(userSnap.data() as UserData);
+          } else {
+            // Check if this is the very first user
+            let isFirstUser = false;
+            try {
+              const usersQuery = query(collection(db, 'users'), limit(1));
+              const usersSnapshot = await getDocs(usersQuery);
+              isFirstUser = usersSnapshot.empty;
+            } catch (err) {
+              console.error("Error checking for existing users:", err);
+              // If it fails (e.g., due to rules before deploying), default to false
+            }
+
+            // Create new user profile
+            const newUser: UserData = {
+              uid: firebaseUser.uid,
+              email: firebaseUser.email || '',
+              role: isFirstUser ? 'admin' : 'user',
+              credits: isFirstUser ? 9999 : 3,
+              plan: 'free',
+              planStatus: 'active'
+            };
+            await setDoc(userRef, newUser);
+            setUserData(newUser);
+          }
+        } catch (err) {
+          console.error("Failed to fetch user data:", err);
+        }
+      } else {
+        setUserData(null);
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="h-screen w-full flex items-center justify-center bg-slate-50">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
+
+  return (
+    <BrowserRouter>
+      <div className="min-h-screen w-full bg-slate-50 font-sans text-slate-900 flex flex-col overflow-hidden">
+        {user && <Navbar userData={userData} />}
+        <div className="flex-1 overflow-auto">
+          <Routes>
+            <Route path="/auth" element={!user ? <Auth /> : <Navigate to="/" />} />
+            <Route path="/" element={user ? (userData ? <Tool userData={userData} setUserData={setUserData} /> : <div className="p-8 text-center text-red-500 font-medium">Loading profile or offline...</div>) : <Navigate to="/auth" />} />
+            <Route path="/plans" element={user && userData ? <Plans userData={userData} setUserData={setUserData} /> : <Navigate to="/auth" />} />
+            <Route path="/dashboard" element={user && userData?.role === 'admin' ? <Dashboard userData={userData} /> : <Navigate to="/" />} />
+          </Routes>
+        </div>
+      </div>
+    </BrowserRouter>
+  );
+}

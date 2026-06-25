@@ -1,0 +1,31 @@
+{
+  "rules": [
+    {
+      "collection": "users",
+      "permissions": {
+        "read": "request.auth != null",
+        "create": "request.auth != null && request.auth.uid == document",
+        "update": "request.auth != null && (request.auth.uid == document || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')",
+        "delete": "false"
+      },
+      "indexes": []
+    },
+    {
+      "collection": "removal_logs",
+      "permissions": {
+        "read": "request.auth != null && (resource.data.uid == request.auth.uid || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')",
+        "create": "request.auth != null && request.resource.data.uid == request.auth.uid",
+        "update": "false",
+        "delete": "false"
+      },
+      "indexes": [
+        {
+          "fields": [
+            "uid",
+            "timestamp"
+          ]
+        }
+      ]
+    }
+  ]
+}
