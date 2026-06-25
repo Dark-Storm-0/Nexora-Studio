@@ -311,7 +311,7 @@ export default function Tool({ userData, setUserData }: ToolProps) {
       <footer className="bg-slate-900 text-white px-8 py-6 flex-shrink-0 rounded-xl mt-4">
         <div className="flex justify-between items-start border-b border-slate-800 pb-4 mb-4">
           <div className="max-w-xs">
-            <div className="text-xl font-bold mb-2 text-[#818CF8]">AI BUILDER</div>
+            <div className="text-xl font-bold mb-2 text-[#818CF8]">NEXORA STUDIO</div>
             <p className="text-xs text-slate-400 leading-relaxed">Upgrade your templates to the modern 2026 standard smoothly and securely.</p>
           </div>
         </div>

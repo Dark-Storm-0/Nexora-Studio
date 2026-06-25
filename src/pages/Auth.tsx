@@ -40,7 +40,7 @@ export default function Auth() {
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center text-3xl font-black bg-gradient-to-r from-[#6366F1] via-[#8B5CF6] to-[#818CF8] bg-clip-text text-transparent items-center gap-2 drop-shadow-sm mb-6">
           <Sparkles className="w-8 h-8 text-[#6366F1]" />
-          AI BUILDER
+          NEXORA STUDIO
         </div>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-slate-900">
           {isLogin ? 'Sign in to your account' : 'Create a new account'}
