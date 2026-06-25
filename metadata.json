@@ -1,6 +1,6 @@
 {
-  "name": "Dark Storm Upgrade Tool",
-  "description": "A tool to upgrade your Blogger template to the 2026 Dark Storm version with modern colors, fonts, and layouts.",
+  "name": "Nexora Studio",
+  "description": "Nexora Studio - Complete Website Control Panel and Management System",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

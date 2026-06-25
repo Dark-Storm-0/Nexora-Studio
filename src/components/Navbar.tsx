@@ -15,7 +15,7 @@ export default function Navbar({ userData }: { userData: UserData | null }) {
           className="text-2xl font-black bg-gradient-to-r from-[#6366F1] via-[#8B5CF6] to-[#818CF8] bg-clip-text text-transparent flex items-center gap-2 drop-shadow-sm"
         >
           <Sparkles className="w-6 h-6 text-[#6366F1] animate-pulse" />
-          AI BUILDER
+          NEXORA STUDIO
         </motion.div>
       </Link>
 
