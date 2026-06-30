@@ -9,6 +9,8 @@ export default function PaymentMethodsManager() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Partial<PaymentMethod> | null>(null);
 
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
   useEffect(() => {
     fetchMethods();
   }, []);
@@ -40,9 +42,9 @@ export default function PaymentMethodsManager() {
   };
 
   const deleteMethod = async (id: string) => {
-    if (!window.confirm('Delete this payment method?')) return;
     try {
       await deleteDoc(doc(db, 'paymentMethods', id));
+      setDeletingId(null);
       fetchMethods();
     } catch (error) {
       console.error("Error deleting", error);
@@ -79,12 +81,32 @@ export default function PaymentMethodsManager() {
                 </div>
               </div>
               <div className="flex gap-2">
-                <button onClick={() => setEditing(method)} className="p-2 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-lg">
-                  <Edit2 className="w-4 h-4" />
-                </button>
-                <button onClick={() => deleteMethod(method.id)} className="p-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg">
-                  <Trash2 className="w-4 h-4" />
-                </button>
+                {deletingId === method.id ? (
+                  <div className="flex items-center gap-1 bg-red-50 border border-red-200 px-2 py-1 rounded-lg text-[10px]">
+                    <span className="font-bold text-red-700">تأكيد؟</span>
+                    <button 
+                      onClick={() => deleteMethod(method.id)} 
+                      className="px-1.5 py-0.5 bg-red-600 text-white font-bold rounded hover:bg-red-700"
+                    >
+                      نعم
+                    </button>
+                    <button 
+                      onClick={() => setDeletingId(null)} 
+                      className="px-1.5 py-0.5 bg-slate-200 text-slate-700 font-bold rounded hover:bg-slate-300"
+                    >
+                      لا
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <button onClick={() => setEditing(method)} className="p-2 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-lg">
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => setDeletingId(method.id)} className="p-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </>
+                )}
               </div>
             </div>
             <div className="text-sm font-mono bg-slate-50 p-4 rounded border border-slate-100 whitespace-pre-wrap flex-1">

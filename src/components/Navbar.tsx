@@ -4,10 +4,11 @@ import { auth } from '../lib/firebase';
 import { signOut } from 'firebase/auth';
 import { Sparkles, LayoutDashboard, LogOut, Coins } from 'lucide-react';
 import { motion } from 'motion/react';
+import GoogleTranslator from './GoogleTranslator';
 
 export default function Navbar({ userData }: { userData: UserData | null }) {
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200 shadow-sm px-8 py-4 flex items-center justify-between">
+    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200 shadow-sm px-8 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
       <Link to="/">
         <motion.div 
           animate={{ y: [0, -3, 0] }} 
@@ -19,7 +20,10 @@ export default function Navbar({ userData }: { userData: UserData | null }) {
         </motion.div>
       </Link>
 
-      <div className="flex items-center gap-6">
+      <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+        {/* Dynamic Multi-Language Google Translator Element */}
+        <GoogleTranslator />
+
         {userData && (
           <div className="flex items-center gap-4">
             <Link to="/plans" className="text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors uppercase tracking-wider">
@@ -50,3 +54,4 @@ export default function Navbar({ userData }: { userData: UserData | null }) {
     </header>
   );
 }
+

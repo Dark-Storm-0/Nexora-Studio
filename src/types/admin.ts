@@ -17,10 +17,24 @@ export interface PaymentMethod {
 }
 
 export interface SiteSettings {
-  topAdHtml: string;
-  bottomAdHtml: string;
+  topAdHtml?: string;
+  bottomAdHtml?: string;
   toolEnabled: boolean;
   heroTitle: string;
   heroSubtitle: string;
   primaryColor: string;
+  // Adsterra Configuration
+  adsterraPopunder?: string;
+  adsterraSocialBar?: string;
+  adsterraDirectLink?: string;
+  adsterraBanner728x90?: string;
+  adsterraBanner300x250?: string;
+  // PopAds Configuration
+  popadsPopunder?: string;
+  // Monetag/PropellerAds Configuration
+  monetagPopunder?: string;
+  monetagVignette?: string;
+  // Custom script injection
+  customHeaderCode?: string;
+  customFooterCode?: string;
 }

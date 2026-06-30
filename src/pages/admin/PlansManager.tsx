@@ -9,6 +9,8 @@ export default function PlansManager() {
   const [loading, setLoading] = useState(true);
   const [editingPlan, setEditingPlan] = useState<Partial<Plan> | null>(null);
 
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
   useEffect(() => {
     fetchPlans();
   }, []);
@@ -40,9 +42,9 @@ export default function PlansManager() {
   };
 
   const deletePlan = async (id: string) => {
-    if (!window.confirm('Delete this plan?')) return;
     try {
       await deleteDoc(doc(db, 'plans', id));
+      setDeletingId(null);
       fetchPlans();
     } catch (error) {
       console.error("Error deleting plan", error);
@@ -72,12 +74,32 @@ export default function PlansManager() {
                 <div className="text-2xl font-black">${plan.price}</div>
               </div>
               <div className="flex gap-2">
-                <button onClick={() => setEditingPlan(plan)} className="p-2 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-lg">
-                  <Edit2 className="w-4 h-4" />
-                </button>
-                <button onClick={() => deletePlan(plan.id)} className="p-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg">
-                  <Trash2 className="w-4 h-4" />
-                </button>
+                {deletingId === plan.id ? (
+                  <div className="flex items-center gap-1 bg-red-50 border border-red-200 px-2 py-1 rounded-lg text-[10px]">
+                    <span className="font-bold text-red-700">تأكيد؟</span>
+                    <button 
+                      onClick={() => deletePlan(plan.id)} 
+                      className="px-1.5 py-0.5 bg-red-600 text-white font-bold rounded hover:bg-red-700"
+                    >
+                      نعم
+                    </button>
+                    <button 
+                      onClick={() => setDeletingId(null)} 
+                      className="px-1.5 py-0.5 bg-slate-200 text-slate-700 font-bold rounded hover:bg-slate-300"
+                    >
+                      لا
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <button onClick={() => setEditingPlan(plan)} className="p-2 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-lg">
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => setDeletingId(plan.id)} className="p-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </>
+                )}
               </div>
             </div>
             <div className="text-sm text-slate-600 mb-4">

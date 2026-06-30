@@ -93,18 +93,10 @@ export default function SiteBuilder() {
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
         <div className="p-6 border-b border-slate-200 bg-slate-50 flex items-center gap-2">
           <MonitorPlay className="w-5 h-5 text-indigo-600" />
-          <h3 className="font-bold text-slate-800">Global Ads & Access</h3>
+          <h3 className="font-bold text-slate-800">Global Tool Access</h3>
         </div>
-        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Top Banner Ad (HTML)</label>
-            <textarea value={settings.topAdHtml} onChange={e => setSettings({...settings, topAdHtml: e.target.value})} className="w-full h-32 bg-slate-50 border border-slate-200 rounded-lg p-3 text-sm font-mono"></textarea>
-          </div>
-          <div>
-            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Bottom Banner Ad (HTML)</label>
-            <textarea value={settings.bottomAdHtml} onChange={e => setSettings({...settings, bottomAdHtml: e.target.value})} className="w-full h-32 bg-slate-50 border border-slate-200 rounded-lg p-3 text-sm font-mono"></textarea>
-          </div>
-          <div className="md:col-span-2 flex items-center gap-3 bg-slate-50 p-4 rounded-lg border border-slate-100">
+        <div className="p-6">
+          <div className="flex items-center gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100">
             <input type="checkbox" id="toolEnabled" checked={settings.toolEnabled} onChange={e => setSettings({...settings, toolEnabled: e.target.checked})} className="w-5 h-5" />
             <label htmlFor="toolEnabled" className="font-bold text-slate-700 cursor-pointer">Enable AI Builder Tool (Uncheck to put in maintenance mode)</label>
           </div>

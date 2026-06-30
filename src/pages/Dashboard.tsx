@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { UserData } from '../App';
-import { LayoutDashboard, Users, CreditCard, LayoutTemplate, Box, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Users, CreditCard, LayoutTemplate, Box, Menu, X, Megaphone } from 'lucide-react';
 import UsersManager from './admin/UsersManager';
 import PlansManager from './admin/PlansManager';
 import PaymentMethodsManager from './admin/PaymentMethodsManager';
 import SiteBuilder from './admin/SiteBuilder';
+import AdsManager from './admin/AdsManager';
 
 interface DashboardProps {
   userData?: UserData;
 }
 
 export default function Dashboard({ userData }: DashboardProps) {
-  const [activeTab, setActiveTab] = useState<'users' | 'plans' | 'payments' | 'site'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'plans' | 'payments' | 'site' | 'ads'>('users');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   if (!userData || userData.role !== 'admin') {
@@ -23,7 +24,8 @@ export default function Dashboard({ userData }: DashboardProps) {
     { id: 'users', label: 'Users & Subs', icon: Users },
     { id: 'plans', label: 'Plans & Pricing', icon: Box },
     { id: 'payments', label: 'Payment Methods', icon: CreditCard },
-    { id: 'site', label: 'Site Builder', icon: LayoutTemplate }
+    { id: 'site', label: 'Site Builder', icon: LayoutTemplate },
+    { id: 'ads', label: 'إدارة الإعلانات / Ads', icon: Megaphone }
   ] as const;
 
   return (
@@ -65,6 +67,7 @@ export default function Dashboard({ userData }: DashboardProps) {
           {activeTab === 'plans' && <PlansManager />}
           {activeTab === 'payments' && <PaymentMethodsManager />}
           {activeTab === 'site' && <SiteBuilder />}
+          {activeTab === 'ads' && <AdsManager />}
         </div>
       </div>
 
